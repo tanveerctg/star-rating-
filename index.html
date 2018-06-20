@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>STAR RATING</title>
+  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+  <link href="css/fontawesome-all.css" rel="stylesheet">
+  <style>
+    *{
+      padding:0;
+      box-sizing: border-box;
+      margin:0;
+      font-family: 'Lato', sans-serif;
+      color:white;
+    }
+    body{
+      background:black;
+    }
+    .rating{
+      color:rgba(128, 128, 128);
+      font-size: 27px;
+      margin:3px;
+      transition: .2s;
+    }
+    
+    .container{
+      display:grid;
+      grid-template-columns:1;
+      grid-auto-flow: column;
+      justify-content: center;
+      align-content:center;
+      height:100vh;
+      position: relative;
+    }
+    h2,h4{
+      position: absolute;
+      top:54%;
+      text-align: center;
+      width:100%;
+      font-weight: 100;
+      display:block;
+    }
+    h4{
+      top:42%;
+      font-size:25px;
+      font-weight:bold;
+     
+    }
+    .box h3{
+      position: absolute;
+      top:54%;
+      text-align: center;
+      width:100%;
+      font-weight: 100;
+      display:block;
+      top:90%;
+      font-size: 20px;
+      font-weight: lighter;
+    }
+    .main-point{
+      position: absolute;
+      font-size:60px;
+      text-align: center;
+      width:100%;
+      transform: translateY(-5%);
+      
+    }
+    .main-rating{
+      position: relative;
+      top:100%;
+      margin:2px;
+      font-size: 21px;
+       color:gray;
+    }
+    .box{
+      position: relative;
+      display:grid;
+      grid-template-columns:1;
+      grid-auto-flow: column; 
+      justify-content: center;
+      align-content:center;
+      height:130px;
+    }
+    .half{
+      position: absolute;
+      top:0;
+      left:0;
+      color:tomato;
+      display:none;
+      font-size: 21px;
+    }
+  </style>
+</head>
+<body>
+    
+    <div class="box">
+        <p class="main-point">0.0</p>
+        <i class="fas fa-star main-rating" data-id='1'>
+          <i class="fas fa-star-half half" data-id='1'></i>
+        </i>
+        <i class="fas fa-star main-rating" data-id='2'>
+          <i class="fas fa-star-half half" data-id='2'></i>
+        </i>
+        <i class="fas fa-star main-rating" data-id='3'>
+          <i class="fas fa-star-half half" data-id='3'></i>
+        </i>
+        <i class="fas fa-star main-rating" data-id='4'>
+          <i class="fas fa-star-half half" data-id='4'></i>
+        </i>
+        <i class="fas fa-star main-rating" data-id='5'>
+          <i class="fas fa-star-half half" data-id='5'></i>
+        </i>
+        <br>
+        <h3>Average Rating</h3>
+        
+    </div>
+  
+
+  <div class="container">
+      <h4>Rate this site</h4>
+      <i class="fas fa-star rating" data-id='1'></i>
+      <i class="fas fa-star rating" data-id='2'></i>
+      <i class="fas fa-star rating" data-id='3'></i>
+      <i class="fas fa-star rating" data-id='4'></i>
+      <i class="fas fa-star rating" data-id='5'></i>
+      <h2></h2>
+  </div>
+  <script>
+    const ratings=document.querySelectorAll('.rating');
+    const points=[];
+    ratings.forEach(each=>{
+      //container
+      each.addEventListener('click',function(){
+        const point=Number(this.dataset.id);
+        if(point==5){
+          document.querySelector(`h2`).innerHTML='Loved it';
+        }else if(point==4){
+          document.querySelector(`h2`).innerHTML='Liked it';
+        }else if(point==3){
+          document.querySelector(`h2`).innerHTML=`it's Ok`;
+        }else if(point==2){
+          document.querySelector(`h2`).innerHTML=`Disliked it`;
+        }else if(point==1){
+          document.querySelector(`h2`).innerHTML=`Hated it`;
+        }
+        points.push(point);
+        for(let i=0;i<point;i++){
+          document.querySelector(`.rating[data-id='${i+1}']`).style.color='yellowgreen';
+        }
+        //box
+         box();
+        let storePoint=Number(this.dataset.id);
+        for(let k=0 ;k<storePoint; k++){
+        
+          document.querySelector(`.rating[data-id='${storePoint+1}']`).style.color='gray'; 
+          storePoint++;
+        }
+      
+     
+       
+      });
+    });
+
+
+   function box(){
+
+         let sum=0;
+        let count__int;
+        let count__fraction;
+        for(let k=0;k<points.length;k++){
+
+          sum=sum+points[k];
+          const total_rating=(sum/points.length).toFixed(1);
+
+          //for main rating
+          const integer=total_rating.split('.')[0];
+          const fraction=total_rating.split('.')[1];
+
+          count__int=Number(integer);
+          count__fraction=Number(fraction);
+          document.querySelector('p').innerHTML=total_rating;
+        };
+        //integer part function
+          function main__rating__integer(int){
+              let k=1;
+              for(let i=0;i<5-int;i++){
+                document.querySelector(`.main-rating[data-id='${int+k}']`).style.color='gray';
+               
+                k++;
+              }
+          
+            }
+      
+        //main-rating INTEGER PART
+            if(count__int==0){
+              for(let m=0;m<5;m++){
+                document.querySelector(`.main-rating[data-id='${m+1}']`).style.color='tomato';
+            }
+            main__rating__integer(count__int);
+
+            }else if(count__int==1){
+              for(let m=0;m<count__int;m++){
+                document.querySelector(`.main-rating[data-id='${m+1}']`).style.color='tomato';
+            }
+            main__rating__integer(count__int);
+            }else if(count__int==2){
+              for(let m=0;m<count__int;m++){
+                document.querySelector(`.main-rating[data-id='${m+1}']`).style.color='tomato';
+            }
+            main__rating__integer(count__int);
+
+            }else if(count__int==3){
+              for(let m=0;m<count__int;m++){
+                document.querySelector(`.main-rating[data-id='${m+1}']`).style.color='tomato';
+            }
+            main__rating__integer(count__int);
+            
+            }else if(count__int==4){
+              for(let m=0;m<count__int;m++){
+                document.querySelector(`.main-rating[data-id='${m+1}']`).style.color='tomato';
+            }
+            main__rating__integer(count__int);
+            }else{
+              for(let m=0;m<count__int;m++){
+                document.querySelector(`.main-rating[data-id='${m+1}']`).style.color='tomato';
+            }
+            main__rating__integer(count__int);
+            }
+  
+            //fraction part function
+          function half__rating__integer(int,frac){
+            if(frac>=3 && frac<=7){
+              console.log(`above 3: ${frac}`);
+              let k=1;
+              for(let i=0;i<5-int;i++){  
+                if (k===1){
+                  document.querySelector(`.half[data-id='${int+k}']`).style.display='block';
+                }else{
+                  document.querySelector(`.half[data-id='${int+k}']`).style.display='none';
+                }
+                k++;
+              }
+            }else if(frac<3){
+              console.log(`below 3: ${frac}`);
+              let k=1;
+              for(let i=0;i<5-int;i++){  
+                  document.querySelector(`.half[data-id='${int+k}']`).style.display='none';
+                  k++;
+              }
+              }else if(frac>=8){
+                console.log(`above 8: ${frac}`);
+                let k=1;
+              for(let i=0;i<5-int;i++){  
+                  document.querySelector(`.half[data-id='${int+k}']`).style.display='none';
+                  k++;
+              }
+              document.querySelector(`.main-rating[data-id='${int+1}']`).style.color='tomato';
+              }
+            }
+              //main-rating FRACTION PART
+            if(count__fraction>=3 && count__fraction<=7){
+              // console.log(count__int);
+              half__rating__integer(count__int,count__fraction);
+            }else if(count__fraction>=8){
+              // console.log(count__fraction);
+              half__rating__integer(count__int,count__fraction);
+            }else if(count__fraction<3){
+              // console.log(count__fraction);
+              half__rating__integer(count__int,count__fraction);
+            }
+          
+            }
+         
+
+
+  </script>
+</body>
+</html>
